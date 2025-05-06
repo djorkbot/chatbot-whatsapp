@@ -1,0 +1,38 @@
+const express = require('express');
+const axios = require('axios');
+require('dotenv').config();
+
+const app = express();
+app.use(express.urlencoded({ extended: true }));
+
+app.post('/webhook', async (req, res) => {
+  const userMsg = req.body.Body;
+
+  const messages = [
+    { role: "system", content: "Eres un asistente profesional y amigable que responde preguntas de clientes." },
+    { role: "user", content: userMsg }
+  ];
+
+  try {
+    const gptRes = await axios.post('https://api.openai.com/v1/chat/completions', {
+      model: "gpt-4",
+      messages: messages
+    }, {
+      headers: {
+        'Authorization': Bearer ${process.env.OPENAI_API_KEY},
+        'Content-Type': 'application/json'
+      }
+    });
+
+    const reply = gptRes.data.choices[0].message.content;
+    res.set('Content-Type', 'text/xml');
+    res.send(<Response><Message>${reply}</Message></Response>);
+  } catch (error) {
+    console.error("Error al procesar:", error.message);
+    res.set('Content-Type', 'text/xml');
+    res.send(<Response><Message>Error procesando tu mensaje. Intenta más tarde.</Message></Response>);
+  }
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(Servidor funcionando en puerto ${PORT}));
