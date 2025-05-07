@@ -28,7 +28,7 @@ app.post('/webhook', async (req, res) => {
     res.set('Content-Type', 'text/xml');
     res.send(`<Response><Message>${reply}</Message></Response>`);
   } catch (error) {
-    console.error("Error al procesar:", error.message);
+    console.error("Error al procesar:", error.response?.data || error.message);
     res.set('Content-Type', 'text/xml');
     res.send(`<Response><Message>Error procesando tu mensaje. Intenta más tarde.</Message></Response>`);
   }
