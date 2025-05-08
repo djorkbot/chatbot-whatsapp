@@ -15,13 +15,13 @@ app.post('/webhook', async (req, res) => {
 
   try {
     const gptRes = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
-      model: "anthropic/claude-3-sonnet", // Cambia aquí el modelo si lo deseas
+      model: "mistralai/mistral-medium-3", // Cambia aquí el modelo si lo deseas
       messages: messages
     }, {
       headers: {
-        Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+       'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
-        'X-Title': 'chatbot-whatsapp'
+        'X-Title': 'chatbot-whatsapp-v2'
       }
     });
 
