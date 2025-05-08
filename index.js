@@ -15,7 +15,7 @@ app.post('/webhook', async (req, res) => {
 
   try {
     const gptRes = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
-      model: "mistralai/mistral-medium-3", // Cambia aquí el modelo si lo deseas
+     model: process.env.MODEL_PROVIDER, // Cambia aquí el modelo si lo deseas
       messages: messages
     }, {
       headers: {
