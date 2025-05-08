@@ -14,15 +14,17 @@ app.post('/webhook', async (req, res) => {
   ];
 
   try {
-    const gptRes = await axios.post('https://api.openai.com/v1/chat/completions', {
-      model: "gpt-3.5-turbo",
-      messages: messages
-    }, {
-      headers: {
-        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
-        'Content-Type': 'application/json'
-      }
-    });
+  const gptRes = await axios.post('https://openrouter.ai/api/v1/chat/completions', {
+  model: "mistralai/mistral-7b-instruct", // o el modelo que elijas
+  messages: messages
+}, {
+  headers: {
+    'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
+    'Content-Type': 'application/json',
+    'HTTP-Referer': 'https://tudominio.com', // opcional, puedes usar tu dominio o dejarlo genérico
+    'X-Title': 'chatbot-whatsapp'
+  }
+});
 
     const reply = gptRes.data.choices[0].message.content;
     res.set('Content-Type', 'text/xml');
@@ -38,5 +40,7 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Servidor funcionando en puerto ${PORT}`));
 // bot actualizado
 
- 
+ require('dotenv').config();
+console.log("CLAVE CARGADA:", process.env.OPENAI_API_KEY); 
+
  
